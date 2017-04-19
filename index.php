@@ -9,18 +9,19 @@
 		 	    			<time class="publish" datetime="<?php the_time() ?>" pubdate="">ۋاقىت: <?php the_time('H:m:s') ?></time>
 		 	    			<span class="author">ئاپتۇر: <?php the_author( ) ?></span>
 		 	    			
-		 	    			<span class="category">سەھىپە: <?php the_category(', ') ?></span>		 	    			
+		 	    			<span class="category">سەھىپە: <?php the_category('، ') ?></span>		 	    			
 		 	    			<span class="view">كۆرۈلۈشى: <?php echo getPostViews(get_the_ID()); ?></span>
 		 	    			<span class="comments">باھا:  <?php comments_popup_link(' يوق', '1','%'); ?></span>
 		 	    		</div>
 		 	    		<div class="thumbnail">
 							<?php if ( has_post_thumbnail() ) { ?> 
-							<a href="<?php the_permalink() ?>"><img src="<?php post_thumbnail_src(635,278); ?>" width="635" height="278" alt="<?php the_title(); ?>" class="entry-image" /></a>
+							<a href="<?php the_permalink() ?>">
+								<img src="<?php bloginfo('template_url');?>/timthumb.php?src=<?php echo post_thumbnail_src(); ?>&h=185&w=320&zc=1" alt="<?php the_title(); ?>" class="thumbnail entry-image"/></a>
 				
 							<?php } ?>
 
 						</div>
-						<p><?php echo wp_trim_words( get_the_content(), 80 ); ?></p>
+						<p><?php echo wp_trim_words( get_the_content(), 40 ); ?></p>
 						
 						
 	 	    		</div>
